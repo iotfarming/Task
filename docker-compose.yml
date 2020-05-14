@@ -1,0 +1,23 @@
+version: '3'
+services:
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:7.6.2
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - "discovery.type=single-node"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+  logstash:
+    container_name: logstash
+    image: logstash:7.6.2
+    ports:
+      - 5044:5044
+    links:
+      - elasticsearch:elasticsearch
+    depends_on:
+      - elasticsearch
+  kibana:
+    container_name: kibana
